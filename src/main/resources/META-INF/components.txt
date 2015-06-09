@@ -1,0 +1,3 @@
+com.celements.product.catalogue.CatalogueManager
+com.celements.product.serialization.ProductRefSerializerManager
+com.celements.product.resolving.ProductRefResolverManager
