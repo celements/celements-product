@@ -1,7 +1,8 @@
 package com.celements.product.resolving;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.xwiki.component.annotation.Component;
@@ -9,19 +10,19 @@ import org.xwiki.component.annotation.InstantiationStrategy;
 import org.xwiki.component.annotation.Requirement;
 import org.xwiki.component.descriptor.ComponentInstantiationStrategy;
 
-import com.celements.product.UniqueProductRefException;
 import com.celements.product.IProductRef;
 import com.celements.product.IUniqueProductRef;
+import com.celements.product.UniqueProductRefException;
 
 @Component
 @InstantiationStrategy(ComponentInstantiationStrategy.SINGLETON)
 public class ProductRefResolverManager implements IProductRefResolverManagerRole {
 
   @Requirement
-  private List<IProductRefResolverRole> resolvers;
+  List<IProductRefResolverRole> resolvers;
 
   @Requirement
-  private List<IUniqueProductRefResolverRole> unqiueResolvers;
+  List<IUniqueProductRefResolverRole> unqiueResolvers;
 
   @Override
   public IUniqueProductRef resolveUnique(String ref) throws UniqueProductRefException {
@@ -41,18 +42,18 @@ public class ProductRefResolverManager implements IProductRefResolverManagerRole
   }
 
   @Override
-  public List<IProductRef> resolve(String ref) {
+  public Map<String, IProductRef> resolve(String ref) {
     return resolve(ref, null);
   }
 
   @Override
-  public List<IProductRef> resolve(String ref, Set<String> allowed) {
-    List<IProductRef> ret = new ArrayList<IProductRef>();
+  public Map<String, IProductRef> resolve(String ref, Set<String> allowed) {
+    Map<String, IProductRef> ret = new HashMap<String, IProductRef>();
     for (IProductRefResolverRole resolver : resolvers) {
       if ((allowed == null) || allowed.contains(resolver.getName())) {
         IProductRef productRef = resolver.resolve(ref);
         if (productRef != null) {
-          ret.add(productRef);
+          ret.put(resolver.getName(), productRef);
         }
       }
     }

@@ -38,6 +38,7 @@ public interface IProductRefSerializerManagerRole {
    * @param allowed
    *          list of allowed serializers denoted by name
    * @return a map of the serializer name as key and the serialized productRef as value
+   *         (cannot be null/empty)
    */
   public Map<String, String> serialize(IProductRef productRef, Set<String> allowed);
 
