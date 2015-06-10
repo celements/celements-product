@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.xwiki.component.descriptor.DefaultComponentDescriptor;
@@ -38,6 +39,12 @@ public class CatalogueManagerTest extends AbstractBridgedComponentTestCase {
     descr.setRoleHint(catalogueName);
     Utils.getComponentManager().registerComponent(descr, catalogueMock);
     expect(catalogueMock.getName()).andReturn(catalogueName).anyTimes();
+  }
+
+  @After
+  public void tearDown_CatalogueManagerTest() throws Exception {
+    Utils.getComponentManager().unregisterComponent(ICatalogueRole.class, catalogueName);
+    catalogueManager.initialize();
   }
 
   @Test

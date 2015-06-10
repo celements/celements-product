@@ -5,8 +5,10 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,8 +26,11 @@ public class ProductRefResolverManagerTest extends AbstractBridgedComponentTestC
   private String resolverName;
   private String uniqueResolverName;
 
+  private List<IProductRefResolverRole> resolversBackup;
+  private List<IUniqueProductRefResolverRole> uniqueResolversBackup;
+
   @Before
-  public void setup_CatalogueManagerTest() throws Exception {
+  public void setup_ProductRefResolverManagerTest() throws Exception {
     resolverName = "test";
     resolverMock = createMockAndAddToDefault(IProductRefResolverRole.class);
     expect(resolverMock.getName()).andReturn(resolverName).anyTimes();
@@ -34,6 +39,14 @@ public class ProductRefResolverManagerTest extends AbstractBridgedComponentTestC
     expect(uniqueResolverMock.getName()).andReturn(uniqueResolverName).anyTimes();
     resolverManager = (ProductRefResolverManager) Utils.getComponent(
         IProductRefResolverManagerRole.class);
+    resolversBackup = resolverManager.resolvers;
+    uniqueResolversBackup = resolverManager.unqiueResolvers;
+  }
+
+  @After
+  public void tearDown_ProductRefResolverManagerTest() throws Exception {
+    resolverManager.resolvers = resolversBackup;
+    resolverManager.unqiueResolvers = uniqueResolversBackup;
   }
 
   @Test

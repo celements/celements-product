@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 
 import java.util.Map;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.xwiki.component.descriptor.DefaultComponentDescriptor;
@@ -15,9 +16,6 @@ import com.celements.product.IUniqueProductRef;
 import com.celements.product.TestProductRef;
 import com.celements.product.TestUniqueProductRef;
 import com.celements.product.UniqueProductRefException;
-import com.celements.product.serialization.IProductRefSerializerManagerRole;
-import com.celements.product.serialization.IProductRefSerializerRole;
-import com.celements.product.serialization.ProductRefSerializerManager;
 import com.google.common.collect.ImmutableSet;
 import com.xpn.xwiki.web.Utils;
 
@@ -39,6 +37,13 @@ public class ProductRefSerializerManagerTest extends AbstractBridgedComponentTes
     descr.setRoleHint(serializerName);
     Utils.getComponentManager().registerComponent(descr, serializerMock);
     expect(serializerMock.getName()).andReturn(serializerName).anyTimes();
+  }
+
+  @After
+  public void tearDown_ProductRefSerializerManagerTest() throws Exception {
+    Utils.getComponentManager().unregisterComponent(IProductRefSerializerRole.class, 
+        serializerName);
+    serializerManager.initialize();
   }
 
   @Test
