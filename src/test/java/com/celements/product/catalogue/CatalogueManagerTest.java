@@ -26,24 +26,26 @@ public class CatalogueManagerTest extends AbstractBridgedComponentTestCase {
 
   private CatalogueManager catalogueManager;
   private ICatalogueRole catalogueMock;
-  private String catalogueName;
+  private String catalogueMockName;
 
   @Before
   public void setup_CatalogueManagerTest() throws Exception {
     catalogueManager = (CatalogueManager) Utils.getComponent(ICatalogueManagerRole.class);
-    catalogueName = "test";
+    catalogueMockName = "test";
     catalogueMock = createMockAndAddToDefault(ICatalogueRole.class);
     DefaultComponentDescriptor<ICatalogueRole> descr = 
         new DefaultComponentDescriptor<ICatalogueRole>();
     descr.setRole(ICatalogueRole.class);
-    descr.setRoleHint(catalogueName);
+    descr.setRoleHint(catalogueMockName);
     Utils.getComponentManager().registerComponent(descr, catalogueMock);
-    expect(catalogueMock.getName()).andReturn(catalogueName).anyTimes();
+    expect(catalogueMock.getName()).andReturn(catalogueMockName).anyTimes();
   }
+
 
   @After
   public void tearDown_CatalogueManagerTest() throws Exception {
-    Utils.getComponentManager().unregisterComponent(ICatalogueRole.class, catalogueName);
+    Utils.getComponentManager().unregisterComponent(ICatalogueRole.class, 
+        catalogueMockName);
     catalogueManager.initialize();
   }
 
@@ -94,7 +96,7 @@ public class CatalogueManagerTest extends AbstractBridgedComponentTestCase {
     verifyDefault();
     
     assertEquals(1, productMap.size());
-    assertSame(products, productMap.get(catalogueName));
+    assertSame(products, productMap.get(catalogueMockName));
   }
 
   @Test
@@ -113,7 +115,7 @@ public class CatalogueManagerTest extends AbstractBridgedComponentTestCase {
     verifyDefault();
     
     assertEquals(1, productMap.size());
-    assertSame(products, productMap.get(catalogueName));
+    assertSame(products, productMap.get(catalogueMockName));
   }
 
   @Test

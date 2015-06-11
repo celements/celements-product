@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.component.annotation.InstantiationStrategy;
 import org.xwiki.component.annotation.Requirement;
@@ -18,6 +20,9 @@ import com.celements.product.UniqueProductRefException;
 @InstantiationStrategy(ComponentInstantiationStrategy.SINGLETON)
 public class ProductRefResolverManager implements IProductRefResolverManagerRole {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(
+      ProductRefResolverManager.class);
+
   @Requirement
   List<IProductRefResolverRole> resolvers;
 
@@ -29,7 +34,11 @@ public class ProductRefResolverManager implements IProductRefResolverManagerRole
     IUniqueProductRef ret = null;
     for (IUniqueProductRefResolverRole resolver : unqiueResolvers) {
       if (ret == null) {
-        ret = resolver.resolve(ref);
+        try {
+          ret = resolver.resolve(ref);
+        } catch (ProductRefResolvingException exc) {
+          LOGGER.debug("resolver '{}' can't resolve '{}'", resolver.getName(), ref, exc);
+        }
       } else {
         throw new UniqueProductRefException("too many resolver for ref '" + ref + "'");
       }
@@ -51,9 +60,10 @@ public class ProductRefResolverManager implements IProductRefResolverManagerRole
     Map<String, IProductRef> ret = new HashMap<String, IProductRef>();
     for (IProductRefResolverRole resolver : resolvers) {
       if ((allowed == null) || allowed.contains(resolver.getName())) {
-        IProductRef productRef = resolver.resolve(ref);
-        if (productRef != null) {
-          ret.put(resolver.getName(), productRef);
+        try {
+          ret.put(resolver.getName(), resolver.resolve(ref));
+        } catch (ProductRefResolvingException exc) {
+          LOGGER.debug("resolver '{}' can't resolve '{}'", resolver.getName(), ref, exc);
         }
       }
     }

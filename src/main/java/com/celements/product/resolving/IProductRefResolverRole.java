@@ -12,8 +12,10 @@ public interface IProductRefResolverRole {
   /**
    * @param ref
    *          to be resolved, cannot be null/empty
-   * @return the resolved productRef or null if unable to resolve
+   * @return the resolved productRef, cannot be null
+   * @throws ProductRefResolvingException
+   *           if unable to resolve
    */
-  public IProductRef resolve(String ref);
+  public IProductRef resolve(String ref) throws ProductRefResolvingException;
 
 }

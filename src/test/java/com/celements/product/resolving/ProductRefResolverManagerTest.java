@@ -86,7 +86,8 @@ public class ProductRefResolverManagerTest extends AbstractBridgedComponentTestC
   public void testResolve_notResolved() throws Exception {
     resolverManager.resolvers = Arrays.asList(resolverMock);
     String serializedRef = "asdf";
-    expect(resolverMock.resolve(same(serializedRef))).andReturn(null).once();
+    expect(resolverMock.resolve(same(serializedRef))).andThrow(
+        new ProductRefResolvingException()).once();
     
     replayDefault();
     Map<String, IProductRef> ret = resolverManager.resolve(serializedRef);
@@ -143,7 +144,8 @@ public class ProductRefResolverManagerTest extends AbstractBridgedComponentTestC
   public void testResolveUnique_notResolved() throws Exception {
     resolverManager.unqiueResolvers = Arrays.asList(uniqueResolverMock);
     String serializedRef = "asdf";
-    expect(uniqueResolverMock.resolve(same(serializedRef))).andReturn(null).once();
+    expect(uniqueResolverMock.resolve(same(serializedRef))).andThrow(
+        new ProductRefResolvingException()).once();
     
     replayDefault();
     try {
@@ -156,7 +158,7 @@ public class ProductRefResolverManagerTest extends AbstractBridgedComponentTestC
   }
 
   @Test
-  public void testResolveUnique_notResolers() throws Exception {
+  public void testResolveUnique_noResolvers() throws Exception {
     resolverManager.unqiueResolvers = Collections.emptyList();
     String serializedRef = "asdf";
     

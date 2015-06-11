@@ -10,8 +10,10 @@ public interface IUniqueProductRefResolverRole extends IProductRefResolverRole {
   /**
    * @param ref
    *          to be resolved, cannot be null/empty
-   * @return the resolved unique productRef or null if unable to resolve
+   * @return the resolved unique productRef, cannot be null
+   * @throws ProductRefResolvingException
+   *           if unable to resolve
    */
-  public IUniqueProductRef resolve(String ref);
+  public IUniqueProductRef resolve(String ref) throws ProductRefResolvingException;
 
 }

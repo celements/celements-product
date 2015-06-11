@@ -23,26 +23,26 @@ public class ProductRefSerializerManagerTest extends AbstractBridgedComponentTes
 
   private ProductRefSerializerManager serializerManager;
   private IProductRefSerializerRole serializerMock;
-  private String serializerName;
+  private String serializerMockName;
 
   @Before
   public void setup_ProductRefSerializerManagerTest() throws Exception {
     serializerManager = (ProductRefSerializerManager) Utils.getComponent(
         IProductRefSerializerManagerRole.class);
-    serializerName = "test";
+    serializerMockName = "test";
     serializerMock = createMockAndAddToDefault(IProductRefSerializerRole.class);
     DefaultComponentDescriptor<IProductRefSerializerRole> descr = 
         new DefaultComponentDescriptor<IProductRefSerializerRole>();
     descr.setRole(IProductRefSerializerRole.class);
-    descr.setRoleHint(serializerName);
+    descr.setRoleHint(serializerMockName);
     Utils.getComponentManager().registerComponent(descr, serializerMock);
-    expect(serializerMock.getName()).andReturn(serializerName).anyTimes();
+    expect(serializerMock.getName()).andReturn(serializerMockName).anyTimes();
   }
 
   @After
   public void tearDown_ProductRefSerializerManagerTest() throws Exception {
     Utils.getComponentManager().unregisterComponent(IProductRefSerializerRole.class, 
-        serializerName);
+        serializerMockName);
     serializerManager.initialize();
   }
 
@@ -74,7 +74,7 @@ public class ProductRefSerializerManagerTest extends AbstractBridgedComponentTes
     verifyDefault();
     
     assertEquals(1, productMap.size());
-    assertSame(serializedRef, productMap.get(serializerName));
+    assertSame(serializedRef, productMap.get(serializerMockName));
   }
 
   @Test
@@ -93,7 +93,7 @@ public class ProductRefSerializerManagerTest extends AbstractBridgedComponentTes
     verifyDefault();
     
     assertEquals(1, productMap.size());
-    assertSame(serializedRef, productMap.get(serializerName));
+    assertSame(serializedRef, productMap.get(serializerMockName));
   }
 
   @Test
