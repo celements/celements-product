@@ -25,27 +25,25 @@ import com.xpn.xwiki.web.Utils;
 public class CatalogueManagerTest extends AbstractBridgedComponentTestCase {
 
   private CatalogueManager catalogueManager;
-  private ICatalogueRole catalogueMock;
+  private ICatalogueRole<IProduct> catalogueMock;
   private String catalogueMockName;
 
   @Before
   public void setup_CatalogueManagerTest() throws Exception {
+    Class<ICatalogueRole<IProduct>> clazz = CatalogueManager.getProductCatalogueClass();
     catalogueManager = (CatalogueManager) Utils.getComponent(ICatalogueManagerRole.class);
     catalogueMockName = "test";
-    catalogueMock = createMockAndAddToDefault(ICatalogueRole.class);
-    DefaultComponentDescriptor<ICatalogueRole> descr = 
-        new DefaultComponentDescriptor<ICatalogueRole>();
-    descr.setRole(ICatalogueRole.class);
+    catalogueMock = createMockAndAddToDefault(clazz);
+    DefaultComponentDescriptor<ICatalogueRole<IProduct>> descr = new DefaultComponentDescriptor<>();
+    descr.setRole(clazz);
     descr.setRoleHint(catalogueMockName);
     Utils.getComponentManager().registerComponent(descr, catalogueMock);
     expect(catalogueMock.getName()).andReturn(catalogueMockName).anyTimes();
   }
 
-
   @After
   public void tearDown_CatalogueManagerTest() throws Exception {
-    Utils.getComponentManager().unregisterComponent(ICatalogueRole.class, 
-        catalogueMockName);
+    Utils.getComponentManager().unregisterComponent(ICatalogueRole.class, catalogueMockName);
     catalogueManager.initialize();
   }
 
@@ -54,12 +52,12 @@ public class CatalogueManagerTest extends AbstractBridgedComponentTestCase {
     IProductRef ref = new TestProductRef();
     expect(catalogueMock.getSupportedClasses()).andReturn(
         ImmutableSet.<Class<? extends IProductRef>>of()).anyTimes();
-    
+
     replayDefault();
     catalogueManager.initialize();
     Map<String, List<IProduct>> productMap = catalogueManager.getProducts(ref);
     verifyDefault();
-    
+
     assertEquals(0, productMap.size());
   }
 
@@ -68,9 +66,8 @@ public class CatalogueManagerTest extends AbstractBridgedComponentTestCase {
     IProductRef ref = new TestProductRef();
     expect(catalogueMock.getSupportedClasses()).andReturn(
         ImmutableSet.<Class<? extends IProductRef>>of(TestProductRef.class)).anyTimes();
-    expect(catalogueMock.getProducts(same(ref))).andThrow(new ProductRetrievalException()
-        ).once();
-    
+    expect(catalogueMock.getProducts(same(ref))).andThrow(new ProductRetrievalException()).once();
+
     replayDefault();
     catalogueManager.initialize();
     try {
@@ -87,14 +84,14 @@ public class CatalogueManagerTest extends AbstractBridgedComponentTestCase {
     IProductRef ref = new TestProductRef();
     expect(catalogueMock.getSupportedClasses()).andReturn(
         ImmutableSet.<Class<? extends IProductRef>>of(TestProductRef.class)).anyTimes();
-    List<IProduct> products = new ArrayList<IProduct>();
+    List<IProduct> products = new ArrayList<>();
     expect(catalogueMock.getProducts(same(ref))).andReturn(products).once();
-    
+
     replayDefault();
     catalogueManager.initialize();
     Map<String, List<IProduct>> productMap = catalogueManager.getProducts(ref);
     verifyDefault();
-    
+
     assertEquals(1, productMap.size());
     assertSame(products, productMap.get(catalogueMockName));
   }
@@ -103,17 +100,15 @@ public class CatalogueManagerTest extends AbstractBridgedComponentTestCase {
   public void testGetProducts_unique() throws Exception {
     IProductRef ref = new TestUniqueProductRef();
     expect(catalogueMock.getSupportedClasses()).andReturn(
-        ImmutableSet.<Class<? extends IProductRef>>of(TestUniqueProductRef.class)
-        ).anyTimes();
-    List<IProduct> products = new ArrayList<IProduct>();
+        ImmutableSet.<Class<? extends IProductRef>>of(TestUniqueProductRef.class)).anyTimes();
+    List<IProduct> products = new ArrayList<>();
     expect(catalogueMock.getProducts(same(ref))).andReturn(products).once();
-    
-    
+
     replayDefault();
     catalogueManager.initialize();
     Map<String, List<IProduct>> productMap = catalogueManager.getProducts(ref);
     verifyDefault();
-    
+
     assertEquals(1, productMap.size());
     assertSame(products, productMap.get(catalogueMockName));
   }
@@ -123,7 +118,7 @@ public class CatalogueManagerTest extends AbstractBridgedComponentTestCase {
     IUniqueProductRef ref = new TestUniqueProductRef();
     expect(catalogueMock.getSupportedClasses()).andReturn(
         ImmutableSet.<Class<? extends IProductRef>>of()).anyTimes();
-    
+
     replayDefault();
     catalogueManager.initialize();
     try {
@@ -140,7 +135,7 @@ public class CatalogueManagerTest extends AbstractBridgedComponentTestCase {
     IUniqueProductRef ref = new TestUniqueProductRef();
     expect(catalogueMock.getSupportedClasses()).andReturn(
         ImmutableSet.<Class<? extends IProductRef>>of(TestProductRef.class)).anyTimes();
-    
+
     replayDefault();
     catalogueManager.initialize();
     try {
@@ -156,11 +151,9 @@ public class CatalogueManagerTest extends AbstractBridgedComponentTestCase {
   public void testGetProduct_ProductRetrievalException() throws Exception {
     IUniqueProductRef ref = new TestUniqueProductRef();
     expect(catalogueMock.getSupportedClasses()).andReturn(
-        ImmutableSet.<Class<? extends IProductRef>>of(TestUniqueProductRef.class)
-        ).anyTimes();
-    expect(catalogueMock.getProduct(same(ref))).andThrow(new ProductRetrievalException()
-        ).once();
-    
+        ImmutableSet.<Class<? extends IProductRef>>of(TestUniqueProductRef.class)).anyTimes();
+    expect(catalogueMock.getProduct(same(ref))).andThrow(new ProductRetrievalException()).once();
+
     replayDefault();
     catalogueManager.initialize();
     try {
@@ -176,17 +169,16 @@ public class CatalogueManagerTest extends AbstractBridgedComponentTestCase {
   public void testGetProduct() throws Exception {
     IUniqueProductRef ref = new TestUniqueProductRef();
     expect(catalogueMock.getSupportedClasses()).andReturn(
-        ImmutableSet.<Class<? extends IProductRef>>of(TestUniqueProductRef.class)
-        ).anyTimes();
+        ImmutableSet.<Class<? extends IProductRef>>of(TestUniqueProductRef.class)).anyTimes();
     IProduct product = createMockAndAddToDefault(IProduct.class);
     expect(catalogueMock.getProduct(same(ref))).andReturn(product).once();
-    
+
     replayDefault();
     catalogueManager.initialize();
     IProduct ret = catalogueManager.getProduct(ref);
     verifyDefault();
-    
+
     assertSame(product, ret);
   }
-  
+
 }

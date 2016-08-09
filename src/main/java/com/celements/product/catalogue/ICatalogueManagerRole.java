@@ -12,10 +12,9 @@ import com.celements.product.IUniqueProductRef;
 import com.celements.product.UniqueProductRefException;
 
 @ComponentRole
-public interface ICatalogueManagerRole {
+public interface ICatalogueManagerRole<T extends IProduct> {
 
   /**
-   * 
    * @param productRef
    *          to get product for, cannot be null
    * @return the product, cannot be null
@@ -24,22 +23,19 @@ public interface ICatalogueManagerRole {
    * @throws ProductRetrievalException
    *           if retrieving product failed (e.g. database access failed)
    */
-  public IProduct getProduct(IUniqueProductRef productRef)
-      throws UniqueProductRefException, ProductRetrievalException;
+  public T getProduct(IUniqueProductRef productRef) throws UniqueProductRefException,
+      ProductRetrievalException;
 
   /**
-   * 
    * @param productRef
    *          to get products for, cannot be null
    * @return a map of the catalogue name as key and the products as value (cannot be null)
    * @throws ProductRetrievalException
    *           if retrieving products failed (e.g. database access failed)
    */
-  public Map<String, List<IProduct>> getProducts(IProductRef productRef)
-      throws ProductRetrievalException;
+  public Map<String, List<T>> getProducts(IProductRef productRef) throws ProductRetrievalException;
 
   /**
-   * 
    * @param productRef
    *          to get products for, cannot be null
    * @param allowed
@@ -48,7 +44,7 @@ public interface ICatalogueManagerRole {
    * @throws ProductRetrievalException
    *           if retrieving products failed (e.g. database access failed)
    */
-  public Map<String, List<IProduct>> getProducts(IProductRef productRef,
-      Set<String> allowed) throws ProductRetrievalException;
+  public Map<String, List<T>> getProducts(IProductRef productRef, Set<String> allowed)
+      throws ProductRetrievalException;
 
 }

@@ -10,8 +10,9 @@ import com.celements.product.IProductRef;
 import com.celements.product.IUniqueProductRef;
 
 @ComponentRole
-public interface ICatalogueRole extends IManagee<IProductRef> {
+public interface ICatalogueRole<T extends IProduct> extends IManagee<IProductRef> {
 
+  @Override
   public String getName();
 
   /**
@@ -22,11 +23,9 @@ public interface ICatalogueRole extends IManagee<IProductRef> {
    * @throws ProductRetrievalException
    *           if retrieving product failed (e.g. database access failed)
    */
-  public IProduct getProduct(IUniqueProductRef productRef)
-      throws ProductRetrievalException;
+  public T getProduct(IUniqueProductRef productRef) throws ProductRetrievalException;
 
   /**
-   * 
    * @param productRef
    *          to get products for, must be of type from {@link #getSupportedClasses()} and
    *          cannot be null
@@ -34,7 +33,6 @@ public interface ICatalogueRole extends IManagee<IProductRef> {
    * @throws ProductRetrievalException
    *           if retrieving products failed (e.g. database access failed)
    */
-  public List<IProduct> getProducts(IProductRef productRef)
-      throws ProductRetrievalException;
+  public List<T> getProducts(IProductRef productRef) throws ProductRetrievalException;
 
 }
