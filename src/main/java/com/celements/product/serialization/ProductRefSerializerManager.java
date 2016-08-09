@@ -18,12 +18,11 @@ import com.celements.product.UniqueProductRefException;
 
 @Component
 @InstantiationStrategy(ComponentInstantiationStrategy.SINGLETON)
-public class ProductRefSerializerManager 
-    extends AbstractManager<IProductRef, IProductRefSerializerRole> 
-    implements IProductRefSerializerManagerRole {
+public class ProductRefSerializerManager extends
+    AbstractManager<IProductRef, IProductRefSerializerRole> implements
+    IProductRefSerializerManagerRole {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(
-      ProductRefSerializerManager.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ProductRefSerializerManager.class);
 
   @Override
   protected Class<IProductRefSerializerRole> getManageeClass() {
@@ -47,9 +46,8 @@ public class ProductRefSerializerManager
 
   @Override
   public Map<String, String> serialize(IProductRef productRef, Set<String> allowed) {
-    Map<String, String> ret = new HashMap<String, String>();
-    for (IProductRefSerializerRole serializer : getManagees(productRef.getClass(), 
-        allowed)) {
+    Map<String, String> ret = new HashMap<>();
+    for (IProductRefSerializerRole serializer : getManagees(productRef.getClass(), allowed)) {
       ret.put(serializer.getName(), serializer.serialize(productRef));
     }
     return ret;

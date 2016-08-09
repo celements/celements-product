@@ -13,7 +13,6 @@ import com.celements.product.UniqueProductRefException;
 public interface IProductRefSerializerManagerRole {
 
   /**
-   * 
    * @param productRef
    *          to be serialized, cannot be null
    * @return the serialized productRef, cannot be null/empty
@@ -23,7 +22,6 @@ public interface IProductRefSerializerManagerRole {
   public String serialize(IUniqueProductRef productRef) throws UniqueProductRefException;
 
   /**
-   * 
    * @param productRef
    *          to be serialized, cannot be null
    * @return a map of the serializer name as key and the serialized productRef as value
@@ -32,7 +30,6 @@ public interface IProductRefSerializerManagerRole {
   public Map<String, String> serialize(IProductRef productRef);
 
   /**
-   * 
    * @param productRef
    *          to be serialized, cannot be null
    * @param allowed

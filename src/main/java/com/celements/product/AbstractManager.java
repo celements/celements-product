@@ -34,15 +34,15 @@ public abstract class AbstractManager<K, T extends IManagee<K>> implements Initi
 
   @Override
   public void initialize() throws InitializationException {
-    map = new HashMap<Class<? extends K>, List<T>>();
+    map = new HashMap<>();
     try {
       for (T managee : componentManager.lookupList(getManageeClass())) {
         for (Class<? extends K> clazz : managee.getSupportedClasses()) {
           if (!uniqueCheck(clazz)) {
             getManageesFromMap(clazz).add(managee);
           } else {
-            getLogger().error("failed to initialize unique key '{}' for managee '{}'", 
-                clazz, managee);
+            getLogger().error("failed to initialize unique key '{}' for managee '{}'", clazz,
+                managee);
           }
         }
       }
@@ -60,7 +60,7 @@ public abstract class AbstractManager<K, T extends IManagee<K>> implements Initi
   }
 
   protected List<T> getManagees(Class<? extends K> clazz, Set<String> allowed) {
-    List<T> ret = new ArrayList<T>();
+    List<T> ret = new ArrayList<>();
     if (allowed == null) {
       ret.addAll(getManageesFromMap(clazz));
     } else {

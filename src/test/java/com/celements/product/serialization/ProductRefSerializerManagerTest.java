@@ -31,8 +31,7 @@ public class ProductRefSerializerManagerTest extends AbstractBridgedComponentTes
         IProductRefSerializerManagerRole.class);
     serializerMockName = "test";
     serializerMock = createMockAndAddToDefault(IProductRefSerializerRole.class);
-    DefaultComponentDescriptor<IProductRefSerializerRole> descr = 
-        new DefaultComponentDescriptor<IProductRefSerializerRole>();
+    DefaultComponentDescriptor<IProductRefSerializerRole> descr = new DefaultComponentDescriptor<>();
     descr.setRole(IProductRefSerializerRole.class);
     descr.setRoleHint(serializerMockName);
     Utils.getComponentManager().registerComponent(descr, serializerMock);
@@ -41,7 +40,7 @@ public class ProductRefSerializerManagerTest extends AbstractBridgedComponentTes
 
   @After
   public void tearDown_ProductRefSerializerManagerTest() throws Exception {
-    Utils.getComponentManager().unregisterComponent(IProductRefSerializerRole.class, 
+    Utils.getComponentManager().unregisterComponent(IProductRefSerializerRole.class,
         serializerMockName);
     serializerManager.initialize();
   }
@@ -51,12 +50,12 @@ public class ProductRefSerializerManagerTest extends AbstractBridgedComponentTes
     IProductRef ref = new TestProductRef();
     expect(serializerMock.getSupportedClasses()).andReturn(
         ImmutableSet.<Class<? extends IProductRef>>of()).anyTimes();
-    
+
     replayDefault();
     serializerManager.initialize();
     Map<String, String> productMap = serializerManager.serialize(ref);
     verifyDefault();
-    
+
     assertEquals(0, productMap.size());
   }
 
@@ -67,12 +66,12 @@ public class ProductRefSerializerManagerTest extends AbstractBridgedComponentTes
         ImmutableSet.<Class<? extends IProductRef>>of(TestProductRef.class)).anyTimes();
     String serializedRef = "asdf";
     expect(serializerMock.serialize(same(ref))).andReturn(serializedRef).once();
-    
+
     replayDefault();
     serializerManager.initialize();
     Map<String, String> productMap = serializerManager.serialize(ref);
     verifyDefault();
-    
+
     assertEquals(1, productMap.size());
     assertSame(serializedRef, productMap.get(serializerMockName));
   }
@@ -81,17 +80,15 @@ public class ProductRefSerializerManagerTest extends AbstractBridgedComponentTes
   public void testSerialize_uniqueMap() throws Exception {
     IProductRef ref = new TestUniqueProductRef();
     expect(serializerMock.getSupportedClasses()).andReturn(
-        ImmutableSet.<Class<? extends IProductRef>>of(TestUniqueProductRef.class)
-        ).anyTimes();
+        ImmutableSet.<Class<? extends IProductRef>>of(TestUniqueProductRef.class)).anyTimes();
     String serializedRef = "asdf";
     expect(serializerMock.serialize(same(ref))).andReturn(serializedRef).once();
-    
-    
+
     replayDefault();
     serializerManager.initialize();
     Map<String, String> productMap = serializerManager.serialize(ref);
     verifyDefault();
-    
+
     assertEquals(1, productMap.size());
     assertSame(serializedRef, productMap.get(serializerMockName));
   }
@@ -101,7 +98,7 @@ public class ProductRefSerializerManagerTest extends AbstractBridgedComponentTes
     IUniqueProductRef ref = new TestUniqueProductRef();
     expect(serializerMock.getSupportedClasses()).andReturn(
         ImmutableSet.<Class<? extends IProductRef>>of()).anyTimes();
-    
+
     replayDefault();
     serializerManager.initialize();
     try {
@@ -118,7 +115,7 @@ public class ProductRefSerializerManagerTest extends AbstractBridgedComponentTes
     IUniqueProductRef ref = new TestUniqueProductRef();
     expect(serializerMock.getSupportedClasses()).andReturn(
         ImmutableSet.<Class<? extends IProductRef>>of(TestProductRef.class)).anyTimes();
-    
+
     replayDefault();
     serializerManager.initialize();
     try {
@@ -134,17 +131,16 @@ public class ProductRefSerializerManagerTest extends AbstractBridgedComponentTes
   public void testSerialize_unique() throws Exception {
     IUniqueProductRef ref = new TestUniqueProductRef();
     expect(serializerMock.getSupportedClasses()).andReturn(
-        ImmutableSet.<Class<? extends IProductRef>>of(TestUniqueProductRef.class)
-        ).anyTimes();
+        ImmutableSet.<Class<? extends IProductRef>>of(TestUniqueProductRef.class)).anyTimes();
     String serializedRef = "asdf";
     expect(serializerMock.serialize(same(ref))).andReturn(serializedRef).once();
-    
+
     replayDefault();
     serializerManager.initialize();
     String ret = serializerManager.serialize(ref);
     verifyDefault();
-    
+
     assertSame(serializedRef, ret);
   }
-  
+
 }

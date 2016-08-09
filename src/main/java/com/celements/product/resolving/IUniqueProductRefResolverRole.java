@@ -14,6 +14,7 @@ public interface IUniqueProductRefResolverRole extends IProductRefResolverRole {
    * @throws ProductRefResolvingException
    *           if unable to resolve
    */
+  @Override
   public IUniqueProductRef resolve(String ref) throws ProductRefResolvingException;
 
 }

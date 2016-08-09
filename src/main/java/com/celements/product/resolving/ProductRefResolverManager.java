@@ -20,8 +20,7 @@ import com.celements.product.UniqueProductRefException;
 @InstantiationStrategy(ComponentInstantiationStrategy.SINGLETON)
 public class ProductRefResolverManager implements IProductRefResolverManagerRole {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(
-      ProductRefResolverManager.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ProductRefResolverManager.class);
 
   @Requirement
   List<IProductRefResolverRole> resolvers;
@@ -57,7 +56,7 @@ public class ProductRefResolverManager implements IProductRefResolverManagerRole
 
   @Override
   public Map<String, IProductRef> resolve(String ref, Set<String> allowed) {
-    Map<String, IProductRef> ret = new HashMap<String, IProductRef>();
+    Map<String, IProductRef> ret = new HashMap<>();
     for (IProductRefResolverRole resolver : resolvers) {
       if ((allowed == null) || allowed.contains(resolver.getName())) {
         try {

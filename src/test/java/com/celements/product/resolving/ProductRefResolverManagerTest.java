@@ -55,11 +55,11 @@ public class ProductRefResolverManagerTest extends AbstractBridgedComponentTestC
     String serializedRef = "asdf";
     IProductRef ref = createMockAndAddToDefault(IProductRef.class);
     expect(resolverMock.resolve(same(serializedRef))).andReturn(ref).once();
-    
+
     replayDefault();
     Map<String, IProductRef> ret = resolverManager.resolve(serializedRef);
     verifyDefault();
-    
+
     assertEquals(1, ret.size());
     assertSame(ref, ret.get(resolverName));
   }
@@ -72,11 +72,11 @@ public class ProductRefResolverManagerTest extends AbstractBridgedComponentTestC
     expect(resolverMock.resolve(same(serializedRef))).andReturn(ref).once();
     IUniqueProductRef uniqueRef = createMockAndAddToDefault(IUniqueProductRef.class);
     expect(uniqueResolverMock.resolve(same(serializedRef))).andReturn(uniqueRef).once();
-    
+
     replayDefault();
     Map<String, IProductRef> ret = resolverManager.resolve(serializedRef);
     verifyDefault();
-    
+
     assertEquals(2, ret.size());
     assertSame(ref, ret.get(resolverName));
     assertSame(uniqueRef, ret.get(uniqueResolverName));
@@ -88,11 +88,11 @@ public class ProductRefResolverManagerTest extends AbstractBridgedComponentTestC
     String serializedRef = "asdf";
     expect(resolverMock.resolve(same(serializedRef))).andThrow(
         new ProductRefResolvingException()).once();
-    
+
     replayDefault();
     Map<String, IProductRef> ret = resolverManager.resolve(serializedRef);
     verifyDefault();
-    
+
     assertEquals(0, ret.size());
   }
 
@@ -100,11 +100,11 @@ public class ProductRefResolverManagerTest extends AbstractBridgedComponentTestC
   public void testResolve_noResolvers() throws Exception {
     resolverManager.resolvers = Collections.emptyList();
     String serializedRef = "asdf";
-    
+
     replayDefault();
     Map<String, IProductRef> ret = resolverManager.resolve(serializedRef);
     verifyDefault();
-    
+
     assertEquals(0, ret.size());
   }
 
@@ -114,22 +114,21 @@ public class ProductRefResolverManagerTest extends AbstractBridgedComponentTestC
     String serializedRef = "asdf";
     IUniqueProductRef ref = createMockAndAddToDefault(IUniqueProductRef.class);
     expect(uniqueResolverMock.resolve(same(serializedRef))).andReturn(ref).once();
-    
+
     replayDefault();
     IUniqueProductRef ret = resolverManager.resolveUnique(serializedRef);
     verifyDefault();
-    
+
     assertSame(ref, ret);
   }
 
   @Test
   public void testResolveUnique_multiple() throws Exception {
-    resolverManager.unqiueResolvers = Arrays.asList(uniqueResolverMock, 
-        uniqueResolverMock);
+    resolverManager.unqiueResolvers = Arrays.asList(uniqueResolverMock, uniqueResolverMock);
     String serializedRef = "asdf";
     IUniqueProductRef ref = createMockAndAddToDefault(IUniqueProductRef.class);
     expect(uniqueResolverMock.resolve(same(serializedRef))).andReturn(ref).once();
-    
+
     replayDefault();
     try {
       resolverManager.resolveUnique(serializedRef);
@@ -146,7 +145,7 @@ public class ProductRefResolverManagerTest extends AbstractBridgedComponentTestC
     String serializedRef = "asdf";
     expect(uniqueResolverMock.resolve(same(serializedRef))).andThrow(
         new ProductRefResolvingException()).once();
-    
+
     replayDefault();
     try {
       resolverManager.resolveUnique(serializedRef);
@@ -161,7 +160,7 @@ public class ProductRefResolverManagerTest extends AbstractBridgedComponentTestC
   public void testResolveUnique_noResolvers() throws Exception {
     resolverManager.unqiueResolvers = Collections.emptyList();
     String serializedRef = "asdf";
-    
+
     replayDefault();
     try {
       resolverManager.resolveUnique(serializedRef);
@@ -171,5 +170,5 @@ public class ProductRefResolverManagerTest extends AbstractBridgedComponentTestC
     }
     verifyDefault();
   }
-  
+
 }

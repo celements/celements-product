@@ -8,6 +8,7 @@ import com.celements.product.IProductRef;
 @ComponentRole
 public interface IProductRefSerializerRole extends IManagee<IProductRef> {
 
+  @Override
   public String getName();
 
   /**

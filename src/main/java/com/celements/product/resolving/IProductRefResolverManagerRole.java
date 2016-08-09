@@ -13,7 +13,6 @@ import com.celements.product.UniqueProductRefException;
 public interface IProductRefResolverManagerRole {
 
   /**
-   * 
    * @param ref
    *          to be resolved, cannot be null/empty
    * @return the resolved productRef, cannot be null/empty
@@ -23,7 +22,6 @@ public interface IProductRefResolverManagerRole {
   public IUniqueProductRef resolveUnique(String ref) throws UniqueProductRefException;
 
   /**
-   * 
    * @param ref
    *          to be resolved, cannot be null/empty
    * @return a map of the resolver name as key and the resolved productRef as value
@@ -32,7 +30,6 @@ public interface IProductRefResolverManagerRole {
   public Map<String, IProductRef> resolve(String ref);
 
   /**
-   * 
    * @param ref
    *          to be resolved, cannot be null/empty
    * @param allowed
