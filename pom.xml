@@ -30,7 +30,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>  
   <artifactId>celements-product</artifactId>
-  <version>5.1-SNAPSHOT</version>
+  <version>5.1</version>
   <description>Celements Product</description> 
   <dependencies>    
     <!-- Add here all your dependencies -->
@@ -57,6 +57,6 @@
     <connection>scm:git:git@github.com:celements/celements-product.git</connection>
     <developerConnection>scm:git:git@github.com:celements/celements-product.git</developerConnection>
     <url>https://github.com/celements/celements-product</url>
-    <tag>HEAD</tag>
+    <tag>celements-product-5.1</tag>
   </scm>
 </project>
