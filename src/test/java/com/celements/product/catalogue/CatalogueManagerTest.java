@@ -7,10 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.xwiki.component.descriptor.DefaultComponentDescriptor;
 
 import com.celements.common.test.AbstractComponentTest;
 import com.celements.product.IProduct;
@@ -30,21 +28,11 @@ public class CatalogueManagerTest extends AbstractComponentTest {
 
   @Before
   public void setup_CatalogueManagerTest() throws Exception {
-    Class<ICatalogueRole<IProduct>> clazz = CatalogueManager.getProductCatalogueClass();
     catalogueManager = (CatalogueManager) Utils.getComponent(ICatalogueManagerRole.class);
+    Class<ICatalogueRole<IProduct>> clazz = CatalogueManager.getProductCatalogueClass();
     catalogueMockName = "test";
-    catalogueMock = createDefaultMock(clazz);
-    DefaultComponentDescriptor<ICatalogueRole<IProduct>> descr = new DefaultComponentDescriptor<>();
-    descr.setRole(clazz);
-    descr.setRoleHint(catalogueMockName);
-    Utils.getComponentManager().registerComponent(descr, catalogueMock);
+    catalogueMock = registerComponentMock(clazz, catalogueMockName);
     expect(catalogueMock.getName()).andReturn(catalogueMockName).anyTimes();
-  }
-
-  @After
-  public void tearDown_CatalogueManagerTest() throws Exception {
-    Utils.getComponentManager().unregisterComponent(ICatalogueRole.class, catalogueMockName);
-    catalogueManager.initialize();
   }
 
   @Test

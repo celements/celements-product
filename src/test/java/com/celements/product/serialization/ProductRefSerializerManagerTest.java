@@ -5,10 +5,8 @@ import static org.junit.Assert.*;
 
 import java.util.Map;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.xwiki.component.descriptor.DefaultComponentDescriptor;
 
 import com.celements.common.test.AbstractComponentTest;
 import com.celements.product.IProductRef;
@@ -30,19 +28,8 @@ public class ProductRefSerializerManagerTest extends AbstractComponentTest {
     serializerManager = (ProductRefSerializerManager) Utils.getComponent(
         IProductRefSerializerManagerRole.class);
     serializerMockName = "test";
-    serializerMock = createDefaultMock(IProductRefSerializerRole.class);
-    DefaultComponentDescriptor<IProductRefSerializerRole> descr = new DefaultComponentDescriptor<>();
-    descr.setRole(IProductRefSerializerRole.class);
-    descr.setRoleHint(serializerMockName);
-    Utils.getComponentManager().registerComponent(descr, serializerMock);
+    serializerMock = registerComponentMock(IProductRefSerializerRole.class, serializerMockName);
     expect(serializerMock.getName()).andReturn(serializerMockName).anyTimes();
-  }
-
-  @After
-  public void tearDown_ProductRefSerializerManagerTest() throws Exception {
-    Utils.getComponentManager().unregisterComponent(IProductRefSerializerRole.class,
-        serializerMockName);
-    serializerManager.initialize();
   }
 
   @Test
