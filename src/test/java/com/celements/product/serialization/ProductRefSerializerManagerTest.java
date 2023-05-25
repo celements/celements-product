@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xwiki.component.descriptor.DefaultComponentDescriptor;
 
-import com.celements.common.test.AbstractBridgedComponentTestCase;
+import com.celements.common.test.AbstractComponentTest;
 import com.celements.product.IProductRef;
 import com.celements.product.IUniqueProductRef;
 import com.celements.product.TestProductRef;
@@ -19,7 +19,7 @@ import com.celements.product.UniqueProductRefException;
 import com.google.common.collect.ImmutableSet;
 import com.xpn.xwiki.web.Utils;
 
-public class ProductRefSerializerManagerTest extends AbstractBridgedComponentTestCase {
+public class ProductRefSerializerManagerTest extends AbstractComponentTest {
 
   private ProductRefSerializerManager serializerManager;
   private IProductRefSerializerRole serializerMock;
@@ -30,7 +30,7 @@ public class ProductRefSerializerManagerTest extends AbstractBridgedComponentTes
     serializerManager = (ProductRefSerializerManager) Utils.getComponent(
         IProductRefSerializerManagerRole.class);
     serializerMockName = "test";
-    serializerMock = createMockAndAddToDefault(IProductRefSerializerRole.class);
+    serializerMock = createDefaultMock(IProductRefSerializerRole.class);
     DefaultComponentDescriptor<IProductRefSerializerRole> descr = new DefaultComponentDescriptor<>();
     descr.setRole(IProductRefSerializerRole.class);
     descr.setRoleHint(serializerMockName);

@@ -12,13 +12,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.celements.common.test.AbstractBridgedComponentTestCase;
+import com.celements.common.test.AbstractComponentTest;
 import com.celements.product.IProductRef;
 import com.celements.product.IUniqueProductRef;
 import com.celements.product.UniqueProductRefException;
 import com.xpn.xwiki.web.Utils;
 
-public class ProductRefResolverManagerTest extends AbstractBridgedComponentTestCase {
+public class ProductRefResolverManagerTest extends AbstractComponentTest {
 
   private ProductRefResolverManager resolverManager;
   private IProductRefResolverRole resolverMock;
@@ -32,10 +32,10 @@ public class ProductRefResolverManagerTest extends AbstractBridgedComponentTestC
   @Before
   public void setup_ProductRefResolverManagerTest() throws Exception {
     resolverName = "test";
-    resolverMock = createMockAndAddToDefault(IProductRefResolverRole.class);
+    resolverMock = createDefaultMock(IProductRefResolverRole.class);
     expect(resolverMock.getName()).andReturn(resolverName).anyTimes();
     uniqueResolverName = "testUnique";
-    uniqueResolverMock = createMockAndAddToDefault(IUniqueProductRefResolverRole.class);
+    uniqueResolverMock = createDefaultMock(IUniqueProductRefResolverRole.class);
     expect(uniqueResolverMock.getName()).andReturn(uniqueResolverName).anyTimes();
     resolverManager = (ProductRefResolverManager) Utils.getComponent(
         IProductRefResolverManagerRole.class);
@@ -53,7 +53,7 @@ public class ProductRefResolverManagerTest extends AbstractBridgedComponentTestC
   public void testResolve() throws Exception {
     resolverManager.resolvers = Arrays.asList(resolverMock);
     String serializedRef = "asdf";
-    IProductRef ref = createMockAndAddToDefault(IProductRef.class);
+    IProductRef ref = createDefaultMock(IProductRef.class);
     expect(resolverMock.resolve(same(serializedRef))).andReturn(ref).once();
 
     replayDefault();
@@ -68,9 +68,9 @@ public class ProductRefResolverManagerTest extends AbstractBridgedComponentTestC
   public void testResolve_multiple() throws Exception {
     resolverManager.resolvers = Arrays.asList(resolverMock, uniqueResolverMock);
     String serializedRef = "asdf";
-    IProductRef ref = createMockAndAddToDefault(IProductRef.class);
+    IProductRef ref = createDefaultMock(IProductRef.class);
     expect(resolverMock.resolve(same(serializedRef))).andReturn(ref).once();
-    IUniqueProductRef uniqueRef = createMockAndAddToDefault(IUniqueProductRef.class);
+    IUniqueProductRef uniqueRef = createDefaultMock(IUniqueProductRef.class);
     expect(uniqueResolverMock.resolve(same(serializedRef))).andReturn(uniqueRef).once();
 
     replayDefault();
@@ -112,7 +112,7 @@ public class ProductRefResolverManagerTest extends AbstractBridgedComponentTestC
   public void testResolveUnique() throws Exception {
     resolverManager.unqiueResolvers = Arrays.asList(uniqueResolverMock);
     String serializedRef = "asdf";
-    IUniqueProductRef ref = createMockAndAddToDefault(IUniqueProductRef.class);
+    IUniqueProductRef ref = createDefaultMock(IUniqueProductRef.class);
     expect(uniqueResolverMock.resolve(same(serializedRef))).andReturn(ref).once();
 
     replayDefault();
@@ -126,7 +126,7 @@ public class ProductRefResolverManagerTest extends AbstractBridgedComponentTestC
   public void testResolveUnique_multiple() throws Exception {
     resolverManager.unqiueResolvers = Arrays.asList(uniqueResolverMock, uniqueResolverMock);
     String serializedRef = "asdf";
-    IUniqueProductRef ref = createMockAndAddToDefault(IUniqueProductRef.class);
+    IUniqueProductRef ref = createDefaultMock(IUniqueProductRef.class);
     expect(uniqueResolverMock.resolve(same(serializedRef))).andReturn(ref).once();
 
     replayDefault();
