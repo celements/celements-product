@@ -5,12 +5,10 @@ import static org.junit.Assert.*;
 
 import java.util.Map;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.xwiki.component.descriptor.DefaultComponentDescriptor;
 
-import com.celements.common.test.AbstractBridgedComponentTestCase;
+import com.celements.common.test.AbstractComponentTest;
 import com.celements.product.IProductRef;
 import com.celements.product.IUniqueProductRef;
 import com.celements.product.TestProductRef;
@@ -19,7 +17,7 @@ import com.celements.product.UniqueProductRefException;
 import com.google.common.collect.ImmutableSet;
 import com.xpn.xwiki.web.Utils;
 
-public class ProductRefSerializerManagerTest extends AbstractBridgedComponentTestCase {
+public class ProductRefSerializerManagerTest extends AbstractComponentTest {
 
   private ProductRefSerializerManager serializerManager;
   private IProductRefSerializerRole serializerMock;
@@ -30,19 +28,8 @@ public class ProductRefSerializerManagerTest extends AbstractBridgedComponentTes
     serializerManager = (ProductRefSerializerManager) Utils.getComponent(
         IProductRefSerializerManagerRole.class);
     serializerMockName = "test";
-    serializerMock = createMockAndAddToDefault(IProductRefSerializerRole.class);
-    DefaultComponentDescriptor<IProductRefSerializerRole> descr = new DefaultComponentDescriptor<>();
-    descr.setRole(IProductRefSerializerRole.class);
-    descr.setRoleHint(serializerMockName);
-    Utils.getComponentManager().registerComponent(descr, serializerMock);
+    serializerMock = registerComponentMock(IProductRefSerializerRole.class, serializerMockName);
     expect(serializerMock.getName()).andReturn(serializerMockName).anyTimes();
-  }
-
-  @After
-  public void tearDown_ProductRefSerializerManagerTest() throws Exception {
-    Utils.getComponentManager().unregisterComponent(IProductRefSerializerRole.class,
-        serializerMockName);
-    serializerManager.initialize();
   }
 
   @Test

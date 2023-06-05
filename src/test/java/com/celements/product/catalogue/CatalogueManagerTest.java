@@ -7,12 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.xwiki.component.descriptor.DefaultComponentDescriptor;
 
-import com.celements.common.test.AbstractBridgedComponentTestCase;
+import com.celements.common.test.AbstractComponentTest;
 import com.celements.product.IProduct;
 import com.celements.product.IProductRef;
 import com.celements.product.IUniqueProductRef;
@@ -22,7 +20,7 @@ import com.celements.product.UniqueProductRefException;
 import com.google.common.collect.ImmutableSet;
 import com.xpn.xwiki.web.Utils;
 
-public class CatalogueManagerTest extends AbstractBridgedComponentTestCase {
+public class CatalogueManagerTest extends AbstractComponentTest {
 
   private CatalogueManager catalogueManager;
   private ICatalogueRole<IProduct> catalogueMock;
@@ -30,21 +28,11 @@ public class CatalogueManagerTest extends AbstractBridgedComponentTestCase {
 
   @Before
   public void setup_CatalogueManagerTest() throws Exception {
-    Class<ICatalogueRole<IProduct>> clazz = CatalogueManager.getProductCatalogueClass();
     catalogueManager = (CatalogueManager) Utils.getComponent(ICatalogueManagerRole.class);
+    Class<ICatalogueRole<IProduct>> clazz = CatalogueManager.getProductCatalogueClass();
     catalogueMockName = "test";
-    catalogueMock = createMockAndAddToDefault(clazz);
-    DefaultComponentDescriptor<ICatalogueRole<IProduct>> descr = new DefaultComponentDescriptor<>();
-    descr.setRole(clazz);
-    descr.setRoleHint(catalogueMockName);
-    Utils.getComponentManager().registerComponent(descr, catalogueMock);
+    catalogueMock = registerComponentMock(clazz, catalogueMockName);
     expect(catalogueMock.getName()).andReturn(catalogueMockName).anyTimes();
-  }
-
-  @After
-  public void tearDown_CatalogueManagerTest() throws Exception {
-    Utils.getComponentManager().unregisterComponent(ICatalogueRole.class, catalogueMockName);
-    catalogueManager.initialize();
   }
 
   @Test
@@ -170,7 +158,7 @@ public class CatalogueManagerTest extends AbstractBridgedComponentTestCase {
     IUniqueProductRef ref = new TestUniqueProductRef();
     expect(catalogueMock.getSupportedClasses()).andReturn(
         ImmutableSet.<Class<? extends IProductRef>>of(TestUniqueProductRef.class)).anyTimes();
-    IProduct product = createMockAndAddToDefault(IProduct.class);
+    IProduct product = createDefaultMock(IProduct.class);
     expect(catalogueMock.getProduct(same(ref))).andReturn(product).once();
 
     replayDefault();
